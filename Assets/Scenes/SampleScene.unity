@@ -705,7 +705,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 963194225}
   m_LocalRotation: {x: 0.14975126, y: -0.4387207, z: 0.07441034, w: 0.882928}
-  m_LocalPosition: {x: 15.784391, y: 2.105, z: 7.5430326}
+  m_LocalPosition: {x: 15.784391, y: 2.1, z: 7.5430326}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1345,9 +1345,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1995890575}
-  - component: {fileID: 1995890576}
   - component: {fileID: 1995890577}
   - component: {fileID: 1995890578}
+  - component: {fileID: 1995890579}
   m_Layer: 0
   m_Name: ThirdPersonPlayer
   m_TagString: Player
@@ -1363,7 +1363,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1995890574}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 11.4997, y: 0.005, z: 10.79}
+  m_LocalPosition: {x: 11.4997, y: 0, z: 10.79}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -1373,24 +1373,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!143 &1995890576
-CharacterController:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1995890574}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Height: 1
-  m_Radius: 0.29
-  m_SlopeLimit: 45
-  m_StepOffset: 0.3
-  m_SkinWidth: 0.08
-  m_MinMoveDistance: 0.001
-  m_Center: {x: 0, y: 0.54, z: 0}
 --- !u!114 &1995890577
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1403,10 +1385,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0491ae88f39dab649ae5f5ef9d2757e4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  controller: {fileID: 1995890576}
+  controller: {fileID: 1995890579}
   cam: {fileID: 963194228}
   speed: 6
   turnSmoothTime: 0.1
+  gravity: 0.1
+  jumpForce: 0.05
 --- !u!95 &1995890578
 Animator:
   serializedVersion: 5
@@ -1427,6 +1411,24 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
+--- !u!143 &1995890579
+CharacterController:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1995890574}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Height: 1
+  m_Radius: 0.2
+  m_SlopeLimit: 45
+  m_StepOffset: 0.3
+  m_SkinWidth: 0.0001
+  m_MinMoveDistance: 0
+  m_Center: {x: 0, y: 0.5, z: 0}
 --- !u!1 &2101329841
 GameObject:
   m_ObjectHideFlags: 0

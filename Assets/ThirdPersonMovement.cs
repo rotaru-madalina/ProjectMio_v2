@@ -11,6 +11,10 @@ public class ThirdPersonMovement : MonoBehaviour
     public float turnSmoothTime = 0.1f;
     float turnSmoothVelocity;
     private Animator animator;
+    private float ySpeed = 0f;
+    public float gravity = 0.1f;
+    public float jumpForce = 0.05f;
+
     private void Start()
     {
         Cursor.lockState = CursorLockMode.Locked;
@@ -22,8 +26,15 @@ public class ThirdPersonMovement : MonoBehaviour
     {
         float horizontal = Input.GetAxisRaw("Horizontal");
         float vertical = Input.GetAxisRaw("Vertical");
+        bool wave = Input.GetAxisRaw("Wave") > 0;
+        float up = Input.GetAxisRaw("Jump");
+
         Vector3 direction = new Vector3(horizontal, 0f, vertical).normalized;
+
+        Vector3 moveDir = Vector3.zero;
+
         animator.SetFloat("inputMagnitude", direction.magnitude);
+        animator.SetBool("wave", wave);
         if(direction.magnitude >= 0.1f)
         {
             float targetAngle = Mathf.Atan2(direction.x, direction.z) * Mathf.Rad2Deg + cam.eulerAngles.y;
@@ -31,8 +42,40 @@ public class ThirdPersonMovement : MonoBehaviour
 
             transform.rotation = Quaternion.Euler(0f, angle, 0f);
 
-            Vector3 moveDir = Quaternion.Euler(0f, targetAngle, 0f) * Vector3.forward;
-            controller.Move(moveDir.normalized * speed * Time.deltaTime);
+            moveDir = Quaternion.Euler(0f, targetAngle, 0f) * Vector3.forward;
+            
         }
+        if (controller.isGrounded)
+        {
+            ySpeed = 0f;
+        }
+        animator.SetBool("isOnGround", controller.isGrounded);
+        animator.SetFloat("ySpeed", ySpeed);
+
+
+        if (controller.isGrounded && up > 0)
+        {
+            ySpeed = jumpForce;
+        }
+
+        ySpeed -= gravity * Time.deltaTime;
+
+        
+
+
+
+
+
+
+
+
+
+
+        Vector3 undenemiscamintotal = Vector3.zero;
+        undenemiscamintotal = moveDir.normalized * speed * Time.deltaTime;
+        undenemiscamintotal.y = ySpeed;
+        controller.Move(undenemiscamintotal);
+        print(undenemiscamintotal);
+
     }
 }
