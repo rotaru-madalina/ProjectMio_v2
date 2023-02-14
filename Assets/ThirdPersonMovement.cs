@@ -75,7 +75,7 @@ public class ThirdPersonMovement : MonoBehaviour
         undenemiscamintotal = moveDir.normalized * speed * Time.deltaTime;
         undenemiscamintotal.y = ySpeed;
         controller.Move(undenemiscamintotal);
-        print(undenemiscamintotal);
+        //print(undenemiscamintotal);
 
     }
 }
