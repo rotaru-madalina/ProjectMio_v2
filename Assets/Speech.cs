@@ -19,6 +19,8 @@ public class Speech : MonoBehaviour
     void Start()
     {
         Init();
+
+        InvokeRepeating("NextLine", 5.0f, 5.0f);
     }
 
     // Update is called once per frame

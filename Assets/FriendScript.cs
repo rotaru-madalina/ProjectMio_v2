@@ -12,6 +12,8 @@ public class FriendScript : MonoBehaviour
     private Vector3 destination;
     NavMeshAgent agent;
     Animator animator;
+    private bool followingPlayer = true;
+
     public Vector3 Destination 
     {
         get
@@ -27,6 +29,12 @@ public class FriendScript : MonoBehaviour
         }
     }
 
+    public void GoToPoint(Transform destination)
+    {
+        Destination = destination.position;
+        followingPlayer = false;
+    }
+
     private void Start()
     {
         agent = GetComponent<NavMeshAgent>();
@@ -36,13 +44,22 @@ public class FriendScript : MonoBehaviour
 
     private void Update()
     {
+        if(followingPlayer)
+        {
+            GoToPlayer();
+        }
+        animator.SetFloat("inputMagnitude", agent.velocity.magnitude);
+
+    }
+
+    private void GoToPlayer()
+    {
         Vector3 playerpos = player.position;
         Vector3 position = transform.position;
 
         Vector3 dirPlayerToMe = (position - playerpos).normalized;
-        
+
         Destination = playerpos + (dirPlayerToMe) * distanceToPlayer;
 
-        animator.SetFloat("inputMagnitude", agent.velocity.magnitude);
     }
 }

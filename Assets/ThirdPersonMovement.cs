@@ -60,16 +60,6 @@ public class ThirdPersonMovement : MonoBehaviour
 
         ySpeed -= gravity * Time.deltaTime;
 
-        
-
-
-
-
-
-
-
-
-
 
         Vector3 undenemiscamintotal = Vector3.zero;
         undenemiscamintotal = moveDir.normalized * speed * Time.deltaTime;
