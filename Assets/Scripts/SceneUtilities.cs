@@ -9,4 +9,14 @@ public class SceneUtilities : MonoBehaviour
     {
         SceneManager.LoadScene(sceneIndex);
     }
+
+    public void GoToNextScene()
+    {
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
+    }
+
+    public void Quit()
+    {
+        Application.Quit();
+    }
 }
