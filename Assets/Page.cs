@@ -34,14 +34,22 @@ public class Page : MonoBehaviour
 
     public void OpenDescriptionPanel()
     {
-        Image[] childImages = descriptionPanel.GetComponentsInChildren<Image>(false);
+        var details = transform.parent.parent.GetComponentInChildren<DetailsPanel>();
+
+        details.text.text = description;
+        details.image.sprite = Image.sprite;
+
+        /*
+        Image[] childImages = descriptionPanel.transform.parent.GetComponentsInChildren<Image>(false);
         foreach (Image childImage in childImages)
         {
             if (childImage.transform != descriptionPanel.transform)
             {
                 childImage.sprite = Image.sprite;
+                break;
             }
         }
         descriptionPanel.GetComponentInChildren<TMP_Text>().text = description;
+        */
     }
 }
