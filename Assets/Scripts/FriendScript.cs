@@ -49,7 +49,6 @@ public class FriendScript : MonoBehaviour
             GoToPlayer();
         }
         animator.SetFloat("inputMagnitude", agent.velocity.magnitude);
-
     }
 
     private void GoToPlayer()
