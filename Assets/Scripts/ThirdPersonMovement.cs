@@ -1,9 +1,11 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class ThirdPersonMovement : MonoBehaviour
 {
+    private const int INTERACT_RANGE = 10;
     public CharacterController controller;
     public Transform cam;
 
@@ -14,6 +16,12 @@ public class ThirdPersonMovement : MonoBehaviour
     private float ySpeed = 0f;
     public float gravity = 0.1f;
     public float jumpForce = 0.05f;
+    public LayerMask mask;
+
+    private EventInteractionable latestActiveInteractionable;
+
+
+    private EventInteractionable activeInteractionable;
 
     private void Start()
     {
@@ -24,6 +32,33 @@ public class ThirdPersonMovement : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        HandleMovement();
+
+        latestActiveInteractionable?.pressFToInteract.SetActive(false);
+
+        Collider[] interactionables = Physics.OverlapSphere(transform.position, INTERACT_RANGE, mask);
+
+        if (interactionables.Length <= 0)        
+            activeInteractionable = null;        
+        else
+        {
+            foreach (Collider interactionable in interactionables)
+                interactionable.GetComponent<EventInteractionable>().pressFToInteract.SetActive(false);
+
+            Collider closestCollider = interactionables.OrderBy(collider => Vector3.Distance(collider.transform.position, this.transform.position)).FirstOrDefault();
+            activeInteractionable = closestCollider.GetComponent<EventInteractionable>();
+            activeInteractionable.GetComponent<EventInteractionable>().pressFToInteract.SetActive(true);
+        }
+        activeInteractionable?.RotateText(cam.gameObject);
+
+        if (Input.GetKeyDown(KeyCode.F))
+            activeInteractionable?.OnInteract();
+
+        latestActiveInteractionable = activeInteractionable;
+    }
+
+    private void HandleMovement()
+    {
         float horizontal = Input.GetAxisRaw("Horizontal");
         float vertical = Input.GetAxisRaw("Vertical");
         bool wave = Input.GetAxisRaw("Wave") > 0;
@@ -33,9 +68,8 @@ public class ThirdPersonMovement : MonoBehaviour
 
         Vector3 moveDir = Vector3.zero;
 
-        animator.SetFloat("inputMagnitude", direction.magnitude);
-        animator.SetBool("wave", wave);
-        if(direction.magnitude >= 0.1f)
+
+        if (direction.magnitude >= 0.1f)
         {
             float targetAngle = Mathf.Atan2(direction.x, direction.z) * Mathf.Rad2Deg + cam.eulerAngles.y;
             float angle = Mathf.SmoothDampAngle(transform.eulerAngles.y, targetAngle, ref turnSmoothVelocity, turnSmoothTime);
@@ -43,15 +77,13 @@ public class ThirdPersonMovement : MonoBehaviour
             transform.rotation = Quaternion.Euler(0f, angle, 0f);
 
             moveDir = Quaternion.Euler(0f, targetAngle, 0f) * Vector3.forward;
-            
+
         }
         if (controller.isGrounded)
         {
             ySpeed = 0f;
         }
-        animator.SetBool("isOnGround", controller.isGrounded);
-        animator.SetFloat("ySpeed", ySpeed);
-
+        HandleAnimation(wave, direction);
 
         if (controller.isGrounded && up > 0)
         {
@@ -66,6 +98,13 @@ public class ThirdPersonMovement : MonoBehaviour
         undenemiscamintotal.y = ySpeed;
         controller.Move(undenemiscamintotal);
         //print(undenemiscamintotal);
+    }
 
+    private void HandleAnimation(bool wave, Vector3 direction)
+    {
+        animator.SetFloat("inputMagnitude", direction.magnitude);
+        animator.SetBool("wave", wave);
+        animator.SetBool("isOnGround", controller.isGrounded);
+        animator.SetFloat("ySpeed", ySpeed);
     }
 }
