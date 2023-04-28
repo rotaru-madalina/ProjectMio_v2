@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class ThirdPersonMovement : MonoBehaviour
 {
-    private const int INTERACT_RANGE = 10;
+    private const int INTERACT_RANGE = 3;
     public CharacterController controller;
     public Transform cam;
 
@@ -37,17 +37,27 @@ public class ThirdPersonMovement : MonoBehaviour
         latestActiveInteractionable?.pressFToInteract.SetActive(false);
 
         Collider[] interactionables = Physics.OverlapSphere(transform.position, INTERACT_RANGE, mask);
+        List<Collider> enabledInteractionables = new List<Collider>();
 
         if (interactionables.Length <= 0)        
             activeInteractionable = null;        
         else
         {
             foreach (Collider interactionable in interactionables)
-                interactionable.GetComponent<EventInteractionable>().pressFToInteract.SetActive(false);
+            {
+                EventInteractionable eventInteractionable = interactionable.GetComponent<EventInteractionable>();
+                if (eventInteractionable.enabled)
+                    enabledInteractionables.Add(interactionable);
+                eventInteractionable.pressFToInteract.SetActive(false);
 
-            Collider closestCollider = interactionables.OrderBy(collider => Vector3.Distance(collider.transform.position, this.transform.position)).FirstOrDefault();
-            activeInteractionable = closestCollider.GetComponent<EventInteractionable>();
-            activeInteractionable.GetComponent<EventInteractionable>().pressFToInteract.SetActive(true);
+            }
+
+            if (enabledInteractionables.Count > 0)
+            {
+                Collider closestCollider = enabledInteractionables.OrderBy(collider => Vector3.Distance(collider.transform.position, this.transform.position)).FirstOrDefault();
+                activeInteractionable = closestCollider.GetComponent<EventInteractionable>();
+                activeInteractionable.GetComponent<EventInteractionable>().pressFToInteract.SetActive(true);
+            }
         }
         activeInteractionable?.RotateText(cam.gameObject);
 

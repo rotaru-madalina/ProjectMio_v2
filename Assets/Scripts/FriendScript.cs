@@ -8,6 +8,8 @@ public class FriendScript : MonoBehaviour
 {
     public Transform player;
     public float distanceToPlayer = 1f;
+    public bool startDisabled = false;
+
 
     private Vector3 destination;
     NavMeshAgent agent;
@@ -29,6 +31,8 @@ public class FriendScript : MonoBehaviour
         }
     }
 
+    private bool _started = false;
+
     public void GoToPoint(Transform destination)
     {
         Destination = destination.position;
@@ -39,11 +43,15 @@ public class FriendScript : MonoBehaviour
     {
         agent = GetComponent<NavMeshAgent>();
         animator = GetComponent<Animator>();
+        _started = !startDisabled;
     }
 
+    public void Enable() => _started = true; 
+    public void Disable() => _started = false;
 
     private void Update()
     {
+        if (!_started) return;
         if(followingPlayer)
         {
             GoToPlayer();

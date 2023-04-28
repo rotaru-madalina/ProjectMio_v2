@@ -9,11 +9,12 @@ public class TriggerCollider : MonoBehaviour
     //public Speech speech;
     public UnityEvent unityEvent;
     public string targetTag;
+    public GameObject targetGameObject;
 
     private void OnTriggerEnter(Collider other)
     {
-
-        if(other.CompareTag(targetTag))
+        if((!string.IsNullOrEmpty(targetTag) && other.CompareTag(targetTag) ) ||
+            (targetGameObject != null && other.gameObject == targetGameObject))
         {
             //speech.NextSpeech();
             unityEvent.Invoke();

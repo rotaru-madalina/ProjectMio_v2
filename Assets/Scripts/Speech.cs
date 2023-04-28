@@ -5,8 +5,13 @@ using UnityEngine;
 
 public class Speech : MonoBehaviour
 {
-    public List<SubSpeech> speechList = new List<SubSpeech>();
+    public SpeechCollection speechList;
     public TextMeshProUGUI textMeshPro;
+
+    public float autoNextLineTime = 4f;
+
+    private float currentNextLineCooldown = 0f;
+
 
     private int currentLine;
     private int currentSpeech;
@@ -20,13 +25,23 @@ public class Speech : MonoBehaviour
     {
         Init();
 
-        InvokeRepeating("NextLine", 5.0f, 5.0f);
     }
 
     // Update is called once per frame
     void Update()
     {
-        if(Input.GetKeyDown(KeyCode.Q)) 
+        currentNextLineCooldown += Time.deltaTime;
+
+
+        if (currentNextLineCooldown >=  autoNextLineTime)
+        {
+            currentNextLineCooldown = 0;
+            NextLine();
+        }
+
+
+
+        if (Input.GetKeyDown(KeyCode.Q)) 
         {
             NextLine();
         }
@@ -39,32 +54,52 @@ public class Speech : MonoBehaviour
 
     public void NextLine()
     {
-        currentLine++;  
+        currentLine++;
+        textMeshPro.transform.parent.gameObject.SetActive(true);
+
         /*if (currentSpeech < speechList.Count && currentLine >= speechList[currentSpeech].subspeechList.Count)
         {
             NextSpeech();
         }        
         else*/
-            UpdateTextBubble();
+        UpdateTextBubble();
 
 
     }
+
+    public bool IsActive() => textMeshPro.transform.parent.gameObject.activeInHierarchy;
+
     public void NextSpeech()
     {
+        currentNextLineCooldown = 0;
+        textMeshPro.transform.parent.gameObject.SetActive(true);
+
         currentSpeech++;
         currentLine = 0;
 
         UpdateTextBubble();
-        CancelInvoke("NextLine");
-        InvokeRepeating("NextLine", 5.0f, 5.0f);
+
     }
 
+    public void SetSpeechList(SpeechCollection newSpeechList)
+    {
+        if (speechList == newSpeechList) return;
+        currentNextLineCooldown = 0;
+        speechList = newSpeechList;
+        currentLine = 0;
+        currentSpeech = 0;
+        textMeshPro.transform.parent.gameObject.SetActive(true);
+        UpdateTextBubble();
+    }
     private void UpdateTextBubble()
     {
-        if (currentSpeech < speechList.Count && currentLine < speechList[currentSpeech].subspeechList.Count)
-            textMeshPro.text = speechList[currentSpeech].subspeechList[currentLine];
+        if (currentSpeech < speechList.SubSpeeches.Count && currentLine < speechList.SubSpeeches[currentSpeech].subspeechList.Count)
+            textMeshPro.text = speechList.SubSpeeches[currentSpeech].subspeechList[currentLine];
         else
+        {
             Debug.Log("You finished your speech bubbles.");
+            textMeshPro.transform.parent.gameObject.SetActive(false);
+        }
 
     }
 }

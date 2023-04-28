@@ -3,11 +3,11 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class TestVase : MonoBehaviour , IPage
+public class Secret : MonoBehaviour , IPage
 {
     public Sprite pageImage;
-    public string name = "Vase";
-    public string description = "Vase lungi";
+    public string name = "Unnamed";
+    public string description = "Lorem ipsum";
 
     public string Name => name;
 

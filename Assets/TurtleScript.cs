@@ -8,13 +8,19 @@ using UnityEngine.AI;
 public class TurtleScript : MonoBehaviour
 {
     public Transform player;
+
+    public SpeechCollection cancelSpeech;
+    public Speech speech;
     private Vector3 destination;
     NavMeshAgent agent;
     Animator animator;
     private bool followingPlayer = true;
 
+
     public float closeDist = 3;
     public float farDist = 7;
+
+    private bool wake = false;
 
     private Vector3 ClosestSecret
     {
@@ -68,9 +74,16 @@ public class TurtleScript : MonoBehaviour
         }
     }
 
+    public void RemoveTurtlePoint(GameObject turtlePoint)
+    {
+        if(turtlePoints.Contains(turtlePoint.transform.position))
+            turtlePoints.Remove(turtlePoint.transform.position);
+    }
+
     // Update is called once per frame
     void Update()
     {
+        if (!wake) return;
         animator.SetFloat("inputMagnitude", agent.velocity.magnitude);
         DecideMovement();
     }
@@ -94,6 +107,10 @@ public class TurtleScript : MonoBehaviour
     private void GoToPlayer()
     {
         Destination = player.position;
+
+        if (!speech.IsActive())
+            speech.SetSpeechList(cancelSpeech);
+
     }
 
     private void GoToSecret()
@@ -101,7 +118,12 @@ public class TurtleScript : MonoBehaviour
         Destination = ClosestSecret;
     }
 
+    public void WakeUp()
+    {
+        wake = true;
+        animator.SetBool ("hide", false);
 
+    }
     private void Stop()
     {
         Destination = this.transform.position;
