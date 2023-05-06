@@ -61,6 +61,7 @@ public class FriendScript : MonoBehaviour
 
     private void GoToPlayer()
     {
+        if (!player) return;
         Vector3 playerpos = player.position;
         Vector3 position = transform.position;
 

@@ -39,8 +39,6 @@ public class Speech : MonoBehaviour
             NextLine();
         }
 
-
-
         if (Input.GetKeyDown(KeyCode.Q)) 
         {
             NextLine();

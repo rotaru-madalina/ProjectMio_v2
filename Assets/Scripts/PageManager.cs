@@ -46,10 +46,6 @@ public class PageManager : MonoBehaviour
         }
     }
 
-    
-
-    
-
     private void Update()
     {
         if(Input.GetKeyDown(KeyCode.P))
