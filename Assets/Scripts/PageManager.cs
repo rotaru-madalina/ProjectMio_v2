@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.UI;
 
 public class PageManager : MonoBehaviour
@@ -9,24 +10,45 @@ public class PageManager : MonoBehaviour
     public GameObject pagePrefab;
     public GameObject gridParent;
     public GameObject detailsPanel;
+    public UnityEvent onPagesDone;
 
 
     private Dictionary<IPage, Page> dictionar = new Dictionary<IPage, Page>();
     private Transform gridLayoutTransform;
+    private int secretsUnlocked;
+
+    public int SecretsUnlocked
+    {
+        get { return secretsUnlocked; }
+        set 
+        { 
+            secretsUnlocked = value; 
+            if(secretsUnlocked >= pages.Length)
+                onPagesDone.Invoke();
+        }
+    }
+
 
     private IPage[] _pages;
     
-    public void TestUnlockPage(IPage page)
+    public void UnlockPage(IPage page)
     {
-        Debug.Log("YAY AM DEBLOCAT PAGINA " + page.Name);
+        UpdateUI(page);
+        CheckGameCompletion();
+    }
 
+    private void CheckGameCompletion()
+    {
+        SecretsUnlocked++;
+    }
+
+    private void UpdateUI(IPage page)
+    {
         dictionar[page].SetDescription(page.Description);
         dictionar[page].SetTitle(page.Name);
         dictionar[page].SetImage(page.Picture);
         dictionar[page].SetDescriptionPanel(detailsPanel);
     }
-
-
 
     private void Start()
     {

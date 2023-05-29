@@ -28,7 +28,7 @@ public class FriendScript : MonoBehaviour
             destination = value;
             agent.destination = Destination;
             
-        }
+         }
     }
 
     private bool _started = false;

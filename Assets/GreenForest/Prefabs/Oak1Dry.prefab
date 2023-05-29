@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 4339940270552390}
   - component: {fileID: 33682750784983628}
   - component: {fileID: 23346981270299018}
+  - component: {fileID: 5524477499578029193}
   m_Layer: 0
   m_Name: Oak1Dry
   m_TagString: Untagged
@@ -83,3 +84,16 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!65 &5524477499578029193
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1217283847819260}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 5.3698783, y: 25.433758, z: 6.0645466}
+  m_Center: {x: -0.4030769, y: 10.755413, z: 0.1474055}

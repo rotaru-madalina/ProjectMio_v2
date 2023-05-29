@@ -17,7 +17,7 @@ public class Secret : MonoBehaviour , IPage
 
     public void Unlock()
     {
-        FindObjectOfType<PageManager>().TestUnlockPage(this);
+        FindObjectOfType<PageManager>().UnlockPage(this);
     }
 
 
