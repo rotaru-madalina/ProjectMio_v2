@@ -25,8 +25,8 @@ public class ThirdPersonMovement : MonoBehaviour
 
     private void Start()
     {
-        Cursor.lockState = CursorLockMode.Locked;
-        Cursor.visible= false;
+        UnityEngine.Cursor.lockState = CursorLockMode.Locked;
+        UnityEngine.Cursor.visible= false;
         animator = GetComponent<Animator>();
     }
     // Update is called once per frame
@@ -54,7 +54,8 @@ public class ThirdPersonMovement : MonoBehaviour
 
             if (enabledInteractionables.Count > 0)
             {
-                Collider closestCollider = enabledInteractionables.OrderBy(collider => Vector3.Distance(collider.transform.position, this.transform.position)).FirstOrDefault();
+                Collider closestCollider = enabledInteractionables.OrderBy(
+                    collider => Vector3.Distance(collider.transform.position, this.transform.position)).FirstOrDefault();
                 activeInteractionable = closestCollider.GetComponent<EventInteractionable>();
                 activeInteractionable.GetComponent<EventInteractionable>().pressFToInteract.SetActive(true);
             }
